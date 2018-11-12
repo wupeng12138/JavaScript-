@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		
+		document.onclick = function(){
+			getAjax("http://localhost/ajax/test.php",function(res){
+				console.log(res)
+			})
+		}
+		
+		function getAjax(url,fn){
+			if(XMLHttpRequest){
+				var ajax = new XMLHttpRequest();
+			}else{
+				var ajax = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			ajax.open("GET",url,true);
+			ajax.onreadystatechange = function(){
+				if(ajax.readyState == 4 && ajax.status == 200){
+					fn(ajax.responseText);
+				}
+			}
+			ajax.send(null);
+		}
+	</script>
+</html>

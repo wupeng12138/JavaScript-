@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<input type="text" id="user" name="user" />
+		<input type="text" id="pass" name="pass" />
+		<input type="button" name="btn" id="btn" value="登录" />
+	</body>
+	<script type="text/javascript">
+		var obtn = document.getElementById("btn")
+		var ouser = document.getElementById("user")
+		var opass = document.getElementById("pass")
+		
+		obtn.onclick = function(){
+			var myurl = "http://localhost/ajax/login.php?user="+ouser.value+"&pass="+opass.value;
+			getAjax(myurl,function(res){
+				console.log(res);
+			})
+		}
+		
+		function getAjax(url,fn){
+			if(XMLHttpRequest){
+				var ajax = new XMLHttpRequest();
+			}else{
+				var ajax = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			ajax.open("GET",url,true);
+			ajax.onreadystatechange = function(){
+				if(ajax.readyState == 4 && ajax.status == 200){
+					fn(ajax.responseText);
+				}
+			}
+			ajax.send(null);
+		}
+	</script>
+</html>
