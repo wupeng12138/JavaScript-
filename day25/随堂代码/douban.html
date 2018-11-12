@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<input type="text" name="txt" id="txt" value="" />
+	</body>
+	<script src="ajax.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var otxt = document.getElementById("txt");
+		
+		document.onclick = function(){
+			var url = "https:api.douban.com/v2/book/search?q="+ otxt.value +"&count=1&callback=liyang";
+			getJsonp(url,"liyang").then(function(res){
+				console.log(res)
+			});
+		}
+	</script>
+</html>

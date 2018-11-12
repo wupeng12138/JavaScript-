@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<style type="text/css">
+			*{margin: 0;padding: 0;}
+			.cont{width: 1000px;border: solid 1px black;margin: 0 auto;display: flex;flex-wrap: wrap;}
+			.cont .box{width: 250px;border: solid 1px black;box-sizing: border-box;text-align: center;padding: 10px;}
+			.box img{padding: 20px 0px;}
+			.box p{text-align: left;height: 40px;overflow: hidden;margin: 20px 0;}
+			.box span{font-weight: bold;color: red;}
+		</style>
+	<body>
+		<div class="cont" id="cont"></div>
+	</body>
+	<script type="text/javascript">
+		var cont = document.getElementById("cont");
+		var url = "http://localhost/ajax/day25/goods.json";
+		
+		getAjax(url,function(res){
+			var arr = JSON.parse(res);
+			var str = "";
+			for(var i=0;i<arr.length;i++){
+				str+=`<div class="box">
+						<img src="${arr[i].src}"/>
+						<p>${arr[i].name}</p>
+						<span>${arr[i].price}</span>
+					</div>`
+			}
+			cont.innerHTML = str; 
+			
+		})
+		
+		
+		
+		function getAjax(url,fn){
+			var ajax = new XMLHttpRequest();
+			ajax.open("GET",url,true);
+			ajax.onreadystatechange = function(){
+				if(ajax.status == 200 && ajax.readyState == 4){
+					fn(ajax.responseText);
+				}
+			}
+			ajax.send();
+		}
+		
+	</script>
+</html>

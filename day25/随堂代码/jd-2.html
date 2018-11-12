@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<style type="text/css">
+			*{margin: 0;padding: 0;}
+			.cont{width: 1000px;border: solid 1px black;margin: 0 auto;display: flex;flex-wrap: wrap;}
+			.cont .box{width: 250px;border: solid 1px black;box-sizing: border-box;text-align: center;padding: 10px;}
+			.box img{padding: 20px 0px;}
+			.box p{text-align: left;height: 40px;overflow: hidden;margin: 20px 0;}
+			.box span{font-weight: bold;color: red;}
+		</style>
+	<body>
+		<input type="button" name="" id="btn1" value="手机" />
+		<input type="button" name="" id="btn2" value="电脑" />
+		<div class="cont" id="cont"></div>
+	</body>
+	<script type="text/javascript">
+		var cont = document.getElementById("cont");
+		var obtn1 = document.getElementById("btn1");
+		var obtn2 = document.getElementById("btn2");
+		
+		obtn1.onclick = function(){
+			var url = "http://localhost/ajax/day25/goods.php?type="+0;
+			getAjax(url,function(res){
+				var arr = JSON.parse(res)
+				changeText(arr)
+			})
+		}
+		obtn2.onclick = function(){
+			var url = "http://localhost/ajax/day25/goods.php?type="+1;
+			getAjax(url,function(res){
+				var arr = JSON.parse(res);
+				changeText(arr)
+			})
+		}
+		
+		
+		function changeText(arr){
+			var str = "";
+			for(var i=0;i<arr.length;i++){
+				str+=`<div class="box">
+						<img src="${arr[i].src}"/>
+						<p>${arr[i].name}</p>
+						<span>${arr[i].price}</span>
+					</div>`
+			}
+			cont.innerHTML = str; 
+		}
+		
+		
+		function getAjax(url,fn){
+			var ajax = new XMLHttpRequest();
+			ajax.open("GET",url,true);
+			ajax.onreadystatechange = function(){
+				if(ajax.status == 200 && ajax.readyState == 4){
+					fn(ajax.responseText);
+				}
+			}
+			ajax.send();
+		}
+		
+	</script>
+</html>

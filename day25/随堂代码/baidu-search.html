@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{margin: 0;padding: 0;list-style: none;}
+			#sec{width: 700px;height: 60px;margin: 100px auto;border: solid 1px black;}
+			#sec input{float: left;height: 60px;box-sizing: border-box;}
+			#sec input:nth-child(1){width: 600px;border-right: solid 1px black;}
+			#sec input:nth-child(2){width: 100px;border: none;}
+			
+			#list{width: 600px;clear: both;background: #ccc;}
+			#list li{line-height: 30px;border-bottom: solid 1px black;padding: 6px 14px;}
+		</style>
+	</head>
+	<body>
+		<div id="sec">
+			<input type="text" id="txt1" />
+			<input type="button" name="btn" id="btn" value="百度一下" />
+			<ul id="list"></ul>
+		</div>
+	</body>
+	<script src="ajax.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var otxt = document.getElementById("txt1");
+		var olist = document.getElementById("list");
+		var obtn = document.getElementById("btn");
+		
+		otxt.onkeyup = function(){
+			
+			var url = "https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd="+otxt.value+"&cb=liyang"
+			getJsonp(url,"liyang").then(function(res){
+				var str = "";
+				for(var i=0;i<res.s.length;i++){
+					str += `<li>${res.s[i]}</li>`;
+				}
+				olist.innerHTML = str;
+			})
+			
+		}
+		
+		obtn.onclick = function(){
+			window.location.href = "https://www.baidu.com/s?wd="+otxt.value;
+		}
+	</script>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="box"></div>
+	</body>
+	<script type="text/javascript">
+		var abc = "admin";
+		var qwe = 123456;
+		
+		var url = "http://localhost/ajax/day25/test.php";
+		var msg = "user="+ otxt1.value +"&pass=123456";
+		
+//		var url = "http://localhost/ajax/day25/test.php";
+		var obox = document.querySelector(".box");
+		
+		document.onclick = function(){
+			
+			postAjax(url,msg,function(res){
+				obox.innerHTML = res
+			})
+		}
+		
+		function postAjax(url,data,fn){
+			var ajax = new XMLHttpRequest();
+			ajax.open("POST",url,true);
+			ajax.onreadystatechange = function(){
+				if(ajax.status == 200 && ajax.readyState == 4){
+					fn(ajax.responseText);
+				}
+			}
+			ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			ajax.send(data);
+		}
+		
+//		请求数据:GET和POST没有区别
+//		发送数据:
+		
+		
+	</script>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script src="ajax.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+//		getAjax("http://localhost/ajax/day25/go123123ods.php?type=1")
+//		.then(function(res){
+//			console.log(res);
+//		},function(errorCode){
+//			console.error("可能由于网络原因，服务器没有响应，请尝试刷新页面，错误代码为"+errorCode);
+//		})
+
+		postAjax("http://127.0.0.1/ajax/day25/goods.php")
+		.then(function(res){
+			console.log(res);
+		},function(errorCode){
+			console.error("可能由于网络原因，服务器没有响应，请尝试刷新页面，错误代码为"+errorCode);
+		})
+
+		
+//		不同源：
+//		不同协议:http和https
+//		不同ip:127.0.0.1和localhost
+//		不同端口号:8080和3306
+//		不同域名:map.baidu.com和img.baidu.com
+//		以上情况只要出现一种，就属于跨域
+
+//		存在的原因：浏览器一厢情愿基于安全考虑不允许非同源请求
+		
+	</script>
+</html>

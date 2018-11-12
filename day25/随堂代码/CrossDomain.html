@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!--<a href="http://www.baidu.com">12321</a>-->
+		<!--<img src="http://n.sinaimg.cn/news/transform/700/w420h280/20180409/IrPZ-fytnfyp1108144.jpg"/>-->
+	</body>
+	<!--<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js" type="text/javascript" charset="utf-8"></script>-->
+	
+	<!--<script src="http://127.0.0.1/ajax/day25/jsonp.txt" type="text/javascript" charset="utf-8"></script>-->
+	
+	<!--<script type="text/javascript">
+		function liyang(res){
+			console.log("this is html");
+			console.log(res);
+		}
+	</script>
+	<script src="http://127.0.0.1/ajax/day25/jsonp.php?abc=liyang" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+//		fn123();
+	</script>-->
+	
+	<script src="ajax.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		
+		getJsonp("http://127.0.0.1/ajax/day25/jsonp.php")
+		.then(function(res){
+			console.log(res)
+		})
+		
+	</script>
+	
+</html>

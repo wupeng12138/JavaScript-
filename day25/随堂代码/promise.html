@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<input type="button" name="btn" id="btn" value="开始承诺" />
+	</body>
+	<script type="text/javascript">
+
+		var obtn = document.getElementById("btn")
+//		承诺:正在进行时,承诺成功,承诺失败
+		function fn(fn1,fn2){
+			var random = Math.random();
+			if(random<0.5){
+				fn1();
+			}else{
+				fn2();
+			}
+		}
+		obtn.onclick = function(){
+			function success(){
+				console.log("成功");
+				document.body.style.background = "red";
+			}
+			function error(){
+				console.log("失败");
+				document.body.style.background = "#ccc";
+			}
+			fn(success,error)
+		}
+		
+	</script>
+</html>
