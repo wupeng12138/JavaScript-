@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style type="text/css">
+		/*给页面上的元素添加样式*/
+		*{padding: 0;margin: 0;}
+		html,body{width: 100%;height: 100%;background-color: #eee;}
+		#box{width: 50%;height: 100%;margin: 0 auto;text-align: center;}
+		span{font-size: 40px;line-height: 200px;}
+		span:nth-child(2){color: #f00;font-size: 50px; font-weight: 600;width: 160px;display: inline-block;}
+		#startBtn,#stopBtn,#clearBtn{width: 200px;height: 60px;border-radius: 20px;background-color: #0b0;font-size: 30px;margin: 0 auto;line-height: 60px;border: 2px solid #aaa;color: #333;font-weight: 600;cursor: pointer;}
+		#stopBtn{margin: 10px;}
+		#luckyName{width: 20%;height: 60%;background-color: #aaa;position: fixed;right: 5%;top: 20%;overflow-y: scroll;}
+		#luckyName p{color: #555;text-align: center;padding-top: 20px;}
+		h1{text-align: center;border-bottom: 2px solid #f20;padding: 5px 0;}
+		table{border: none;}
+		thead th{border: 0;font-size: 20px;padding: 5px 0;}
+		td{text-align: center;padding: 2px;border: none;}
+		
+	</style>
+	<script type="text/javascript">
+		onload = function(){
+			//把本地存储localStorage取出来，放到一个变量（storage）里面
+			var storage = window.localStorage;	
+			//把班级的名单存到一个数组中
+			var arr = ['罗志强','谢帮建','汪伟','张静静','曾蓉','袁晓强','洪冠群','卢涛','刘俊','罗文汉','陈万明','邹俊超','张雪猛','谢志军','王俊','肖丽平','张瑞','何振章','吴乔','魏攀','文敏','乔斯嘉','张欣','杨光','钟其兵','曹扬','王定坤','陈利','林叙鹏','黄志航','赵绪朋','向岗','廖宇海','程志平','黄喆','安智远','肖文凯','郭伟','齐星智','郑国勇','李锐浩','童静','陈汉','梁炜珍','刘波','程昭景']
+			//获取到页面上的元素节点
+			var oStartBtn = document.getElementById("startBtn");
+			var oStopBtn = document.getElementById("stopBtn");
+			var oClearBtn = document.getElementById("clearBtn");
+			var name = document.getElementsByTagName("span")[1];
+			var table = document.getElementsByTagName("table")[0];
+			var p_TiShi = document.getElementById("luckyName").children[2];
+			var tBody = document.getElementsByTagName("tbody")[0];
+			var num = 0;
+			//创建一个空数组，用于存放点名名单
+			var huMansArr = [];
+			//判断以前是否抽过奖
+			if(storage.huMans){
+				p_TiShi.style.display = "none";
+				huMansArr = JSON.parse(storage.huMans);
+				//对点到过名的名字进行遍历
+				for(var i in huMansArr){
+					//创建一行，存放一个点中的人的信息
+					var tr = document.createElement("tr");
+					console.log(huMansArr[i].name)
+					for(var j=0;j<3;j++){
+						//创建一列，存放一个点中的名字、时间和次数
+						var td = document.createElement("td");
+						//判断是第几列
+						switch(j){
+							//第一列填名字，第二列填时间，第三列填次数
+							case 0:td.innerHTML = huMansArr[i].name;break;
+							case 1:td.innerHTML = huMansArr[i].time;break;
+							case 2:td.innerHTML = huMansArr[i].degree;break;
+						}
+						//把各列添加到行中
+						tr.appendChild(td);
+					}
+					//把各行添加到各列中
+					tBody.appendChild(tr);
+				}
+			}
+			//点击点名
+			oStartBtn.onclick = function(){
+				//点击按钮后，按钮变灰，成为不可点击状态，防止连续点击导致定时器紊乱。
+				oStartBtn.disabled = true; 
+				oStartBtn.style.opacity = .8;
+				oStartBtn.innerHTML = "点名中...";
+				//定时器一，50ms切换一个随机的名字
+				var timer = setInterval(function(){
+					num = parseInt(Math.random()*arr.length);
+					name.innerHTML = arr[num]
+				},50);
+				//定时器二，三秒后停止点名
+				oStopBtn.onclick = function(){
+					//清除定时器一
+					clearInterval(timer);
+					//使点名按钮恢复正常
+					oStartBtn.style.opacity = 1;
+					oStartBtn.innerHTML = "继续点名";
+					oStartBtn.disabled = false;
+					p_TiShi.style.display = "none";
+					//把新点到的名字放到一个新的对象中
+					var newHuMan = {name:name.innerHTML,time:date2string(new Date()), degree:1};
+					//判断以前是否点过名
+					if(storage.huMans){ 
+						//取出以前点的名字放到huMansArr数组中
+						huMansArr = JSON.parse(storage.huMans);	
+						for(var i in huMansArr){
+							//如果新抽的名字之前存在，则中奖次数增加，并结束循环
+							if(newHuMan.name == huMansArr[i].name){
+								huMansArr[i].degree++;
+								var tr = tBody.children[i];
+								var td = tr.children[2];
+								td.innerHTML++;
+								break;
+							}
+							//假如i都到了最后一位了还没有相同的名字，就添加新名字
+							if(i>=huMansArr.length-1){
+								huMansArr.push(newHuMan);
+								var tr = document.createElement("tr");
+								for(var j=0;j<3;j++){
+									var td = document.createElement("td");
+									switch(j){
+										case 0:td.innerHTML = newHuMan.name;break;
+										case 1:td.innerHTML = newHuMan.time;break;
+										case 2:td.innerHTML = newHuMan.degree;break;
+									}
+									tr.appendChild(td);
+								}
+								tBody.appendChild(tr);
+							}
+						};
+						storage.huMans = JSON.stringify(huMansArr);
+					}else{
+						var firstHuMan = [];
+						firstHuMan.push(newHuMan);
+						storage.huMans = JSON.stringify(firstHuMan);
+						var tr = document.createElement("tr");
+						for(var j=0;j<3;j++){
+							var td = document.createElement("td");
+							switch(j){
+								case 0:td.innerHTML = newHuMan.name;break;
+								case 1:td.innerHTML = newHuMan.time;break;
+								case 2:td.innerHTML = newHuMan.degree;break;
+							}
+							tr.appendChild(td);
+						}
+						tBody.appendChild(tr);
+					}
+					//一直能看到点名名单的最后一行
+					tr.scrollIntoView();
+				}						
+			};
+			//将日期对象转换格式
+			function date2string(d, sep){
+				sep = sep || "-";
+				function toDouble(num){
+					return num<10?"0"+num:num;
+				}
+				return d.getFullYear()+sep+ toDouble(d.getMonth()+1) + sep + toDouble(d.getDate()) + " " + toDouble(d.getHours()) + ":" + toDouble(d.getMinutes()) + ":" + toDouble(d.getSeconds());
+			}
+			//点击清空按钮清除列表
+			oClearBtn.onclick = function(){
+				//清空页面列表内容
+				tBody.innerHTML = "";
+				//清空那个本地缓存
+				window.localStorage.huMans = "";
+				//提示信息显示
+				p_TiShi.style.display = "block";
+			}
+			function clearName(json){
+				for(var b=0;b<json.length;b++){
+					for(var j=0;j<arr.length;j++){
+						if(json[b].name == arr[j]){
+//							var index = arr.indexOf(json[b].name)
+							arr.splice(j,j+1);
+							return arr;
+						}
+					}
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+	<!--页面上初始显示的内容，中文可以自己随便改-->
+	<div id="box">
+		<span>恭喜</span><span>?</span><span>被点中啦</span><br />
+		<button id="startBtn">开始点名</button><br />
+		<button id="stopBtn">停止</button><br />
+		<button id="clearBtn">清空列表</button>
+	</div>
+	<div id="luckyName">
+		<h1>点名名单</h1>
+		<table border="1" cellspacing="0" align="center" width="100%" Valign="middle">
+			<thead>
+				<tr>
+					<th>姓名</th>
+					<th>点名时间</th>
+					<th>次数</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+		<p>暂无点名人员信息，请先点名！！！</p>
+	</div>
+</body>
+</html>
